@@ -6,6 +6,10 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
 const dbConnect = require('./config/db')
+// const swaggerSpec = require('./middlewares/swagger')
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./middlewares/swagger')
+
 ;(async function () {
   /**
    * load environment variables from .env
@@ -74,6 +78,10 @@ const dbConnect = require('./config/db')
   )
 
   /**
+   * connect to the swagger api docs
+   */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+  /**
    * Bind routes with express app
    */
 
@@ -89,6 +97,10 @@ const dbConnect = require('./config/db')
    */
 
   await dbConnect(process.env.MONGO_URL)
+
+  /***
+   * connect to the swagger api docs
+   */
 
   /**
    * get express port from .env
