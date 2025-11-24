@@ -1,24 +1,7 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
+import mongoose from 'mongoose'
+import bcrypt from 'bcryptjs'
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     RegisterDto:
- *       type: object
- *       required: [name, email, password]
- *       properties:
- *         name:
- *           type: string
- *           example: John Doe
- *         email:
- *           type: string
- *           example: john@example.com
- *         password:
- *           type: string
- *           example: Password123!
- */
+
 
 const userSchema = new mongoose.Schema(
   {
@@ -64,4 +47,4 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 
 const User = mongoose.model('User', userSchema)
 
-module.exports = User
+export default User

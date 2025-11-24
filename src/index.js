@@ -1,16 +1,13 @@
-const path = require('path')
-const lumie = require('lumie')
-const dotenv = require('dotenv')
-const express = require('express')
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
-const cors = require('cors')
-const dbConnect = require('./config/db')
-// const swaggerSpec = require('./middlewares/swagger')
-const swaggerUi = require('swagger-ui-express')
-const swaggerSpec = require('./middlewares/swagger')
-
-;(async function () {
+/* eslint-disable import/no-extraneous-dependencies */
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import express from 'express'
+import lumie from 'lumie'
+import morgan from 'morgan'
+import path from 'path'
+;import exceptionHandler from './middlewares/exception-handler'
+(async function () {
   /**
    * load environment variables from .env
    */
@@ -60,6 +57,11 @@ const swaggerSpec = require('./middlewares/swagger')
   app.use(morgan('dev'))
 
   /**
+   * Default exception handing
+   */
+  app.use(exceptionHandler)
+
+  /**
    * parse the form data from body using body parser
    */
   app.use(
@@ -78,10 +80,6 @@ const swaggerSpec = require('./middlewares/swagger')
   )
 
   /**
-   * connect to the swagger api docs
-   */
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-  /**
    * Bind routes with express app
    */
 
@@ -91,16 +89,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
     ignore: ['*.spec', '*.action', '*.md'],
     controllers_path: path.join(__dirname, 'controllers'),
   })
-
   /**
    * connect to the mongodb wait for the connection then proceed
    */
 
-  await dbConnect(process.env.MONGO_URL)
-
-  /***
-   * connect to the swagger api docs
-   */
+  //   await dbConnect(process.env.MONGO_URL || 'helloyourmongodburlisnotset')
 
   /**
    * get express port from .env
