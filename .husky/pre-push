@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# 1. Current Branch ka naam nikalo
+branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
+branch="(unnamed branch)"     # detached HEAD
+
+branch=${branch##refs/heads/}
+
+# 2. Check karo agar branch 'main', 'master' ya 'dev' hai
+if [ "$branch" = "main" ] || [ "$branch" = "master" ] || [ "$branch" = "dev" ]; then
+  echo "\n\033[31m========================================================"
+  echo "🚫  STOP! Direct push to '$branch' is NOT allowed."
+  echo "--------------------------------------------------------"
+  echo "Please create a Pull Request (PR) instead."
+  echo "========================================================\033[0m\n"
+  
+  # 3. Process ko fail kar do (Push ruk jayega)
+  exit 1
+fi

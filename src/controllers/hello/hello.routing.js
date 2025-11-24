@@ -13,7 +13,7 @@ module.exports = {
                     values: ['found', 'missing'],
                 }),
                 validate({ field: 'password', values: ['found', 'missing'] }),
-                validate({ field: 'name', isRequired: false }),
+                validate({ field: 'name', isRequired: true }),
                 validationResponse,
             ],
 
