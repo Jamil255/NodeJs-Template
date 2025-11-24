@@ -1,25 +1,28 @@
-import { asyncHandler } from '../../middlewares/asyncHandler'
-import { auth } from '../../middlewares/auth'
-import validationResponse from '../../middlewares/validation-response'
-import { validate } from '../../validators/auth'
-import { hello } from './hi.action'
-import { list } from './list.action'
+import { asyncHandler } from '../../middlewares/asyncHandler';
+import validationResponse from '../../middlewares/validation-response';
+import { validate } from '../../validators/auth';
+import { hello } from './hi.action';
+import { list } from './list.action';
 
 module.exports = {
-  '/': {
-    get: {
-      middlewares: [
-        auth,
-        validate({ field: 'email', values: ['found', 'missing'] }),
-        validationResponse,
-      ],
+    '/': {
+        get: {
+            middlewares: [
+                validate({
+                    field: 'email',
+                    values: ['found', 'missing'],
+                }),
+                validate({ field: 'password', values: ['found', 'missing'] }),
+                validate({ field: 'name', isRequired: false }),
+                validationResponse,
+            ],
 
-      action: asyncHandler(list),
+            action: asyncHandler(list),
+        },
     },
-  },
-  '/hi': {
-    get: {
-      action: asyncHandler(hello),
+    '/hi': {
+        get: {
+            action: asyncHandler(hello),
+        },
     },
-  },
-}
+};

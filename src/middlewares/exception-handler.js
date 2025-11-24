@@ -1,47 +1,48 @@
-import translate from '../helpers/translate.js'
+import translate from '../helpers/translate.js';
 
+// `next` is required by Express for error-handling middleware signature
+// but may be unused in this implementation.
+// eslint-disable-next-line no-unused-vars
 export default (error, request, response, next) => {
-  if (process.env.MYSQL_DB_LOGGING !== false) {
-    // eslint-disable-next-line
-    console.log(error, 'error')
-  }
-  switch (error.name) {
-    case 'AppValidationError':
-      response.status(error.code).json({
-        message: error.message,
-      })
-
-      break
-
-    case 'SequelizeUniqueConstraintError': {
-      let message
-      if (error.errors && error.errors.length) {
-        const columnName = error.errors[0].path.split('.').pop()
-        // eslint-disable-next-line no-console
-        console.log(columnName.charAt(0).toUpperCase() + columnName.slice(1))
-        message = translate('validations', 'unique', {
-          ':attribute':
-            columnName.charAt(0).toUpperCase() + columnName.slice(1),
-        })
-        message = message ? message : error.errors[0].message
-      }
-      response.status(409).json({
-        message,
-      })
-
-      break
+    if (process.env.MYSQL_DB_LOGGING !== false) {
+        // eslint-disable-next-line
+        console.log(error, 'error');
     }
+    switch (error.name) {
+        case 'AppValidationError':
+            response.status(error.code).json({
+                message: error.message,
+            });
 
-    default:
-      response.status(500).json({
-        message: translate('errors', 'default'),
-      })
-  }
-}
+            break;
+
+        case 'SequelizeUniqueConstraintError': {
+            let message;
+            if (error.errors && error.errors.length) {
+                const columnName = error.errors[0].path.split('.').pop();
+                // eslint-disable-next-line no-console
+                console.log(columnName.charAt(0).toUpperCase() + columnName.slice(1));
+                message = translate('validations', 'unique', {
+                    ':attribute': columnName.charAt(0).toUpperCase() + columnName.slice(1),
+                });
+                message = message ? message : error.errors[0].message;
+            }
+            response.status(409).json({
+                message,
+            });
+
+            break;
+        }
+
+        default:
+            response.status(500).json({
+                message: translate('errors', 'default'),
+            });
+    }
+};
 
 export const asyncHandler = (callback) => {
-  // eslint-disable-next-line func-names
-  return function (request, response, next) {
-    return callback(request, response, next).catch(next)
-  }
-}
+    return function (request, response, next) {
+        return callback(request, response, next).catch(next);
+    };
+};

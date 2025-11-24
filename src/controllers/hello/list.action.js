@@ -1,7 +1,7 @@
 export const list = async (req, res) => {
-  try {
-    return res.status(200).json({ message: 'hello from server' })
-  } catch (error) {
-    return res.status(500).json({ message: error?.message })
-  }
-}
+    try {
+        return res.status(200).json({ message: 'hello from server' });
+    } catch (error) {
+        return res.status(500).json({ message: error?.message });
+    }
+};

@@ -1,3 +1,1 @@
-const role = {
-    
-}
+export default {};

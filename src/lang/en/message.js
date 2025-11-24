@@ -1,4 +1,3 @@
-
 export default {
     success: ':attribute been :action successfully.',
     general: 'Success.',
@@ -8,4 +7,4 @@ export default {
     logout: {
         successfull: 'You have signed out successfully.',
     },
-}
+};
