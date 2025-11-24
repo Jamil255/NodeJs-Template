@@ -2,12 +2,11 @@
 
 # 1. Current Branch ka naam nikalo
 branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
-branch="(unnamed branch)"     # detached HEAD
+branch="(unnamed branch)"    
 
 branch=${branch##refs/heads/}
 
-# 2. Check karo agar branch 'main', 'master' ya 'dev' hai
-if [ "$branch" = "main" ] || [ "$branch" = "master" ] || [ "$branch" = "dev" ]; then
+if [ "$branch" = "main" ] || [ "$branch" = "stagging" ] || [ "$branch" = "dev" ]; then
   echo "\n\033[31m========================================================"
   echo "🚫  STOP! Direct push to '$branch' is NOT allowed."
   echo "--------------------------------------------------------"
